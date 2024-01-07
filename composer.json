@@ -1,5 +1,5 @@
 {
-    "name": "donjan-deng/hyperf-casbin",
+    "name": "death_satan/hyperf-casbin",
     "keywords": [
         "hyperf",
         "casbin",
@@ -16,31 +16,38 @@
             "name": "Donjan",
             "homepage": "https://github.com/donjan-deng",
             "role": "Developer"
+        },
+        {
+            "name": "Death-Satan",
+            "role": "Developer"
         }
     ],
     "license": "Apache-2.0",
     "require": {
-        "php": ">=8.0",
+        "php": ">=8.1",
         "ext-bcmath": "*",
         "ext-json": "*",
         "ext-pdo": "*",
         "ext-redis": "*",
         "ext-swoole": ">=4.5",
-        "hyperf/database": "~3.0",
-        "hyperf/redis": "~3.0",
-        "hyperf/process": "~3.0",
-        "hyperf/db-connection": "~3.0",
-        "hyperf/cache": "~3.0",
-        "hyperf/utils": "~3.0",
-        "hyperf/config": "~3.0",
-        "hyperf/logger": "~3.0",
-        "casbin/casbin": "~3.20",
-        "hyperf/command": "~3.0",
+        "hyperf/database": "^3.1",
+        "hyperf/redis": "^3.1",
+        "hyperf/process": "^3.1",
+        "hyperf/db-connection": "^3.1",
+        "hyperf/cache": "^3.1",
+        "hyperf/utils": "^3.1",
+        "hyperf/config": "^3.1",
+        "hyperf/logger": "^3.1",
+        "casbin/casbin": "^3.20",
+        "hyperf/command": "^3.1",
         "casbin/psr3-bridge": "~1.3"
     },
     "require-dev": {
-        "hyperf/testing": "~3.0",
-        "mockery/mockery": "^1.0"
+        "hyperf/testing": "^3.1",
+        "mockery/mockery": "^1.0",
+        "phpstan/phpstan": "^1.0",
+        "friendsofphp/php-cs-fixer": "^3.46",
+        "friendsofhyperf/rector": "^0.1.5"
     },
     "autoload": {
         "psr-4": {
@@ -53,7 +60,9 @@
         }
     },
     "scripts": {
-        "test": "co-phpunit -c phpunit.xml --colors=always"
+        "test": "co-phpunit --prepend tests/bootstrap.php -c phpunit.xml --colors=always",
+        "analyse": "phpstan analyse --memory-limit 1024M -l 0 ./src",
+        "cs-fix": "php-cs-fixer fix $1"
     },
     "extra": {
         "hyperf": {

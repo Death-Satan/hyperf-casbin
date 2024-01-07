@@ -1,15 +1,20 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * This file is part of hyperf components.
+ *
+ * @link     https://github.com/hyperf/hyperf
+ * @contact  2771717608@qq.com
+ */
 
 namespace Donjan\Casbin;
 
 use Casbin\Enforcer as BaseEnforcer;
 use Psr\Container\ContainerInterface;
-use Hyperf\Utils\ApplicationContext;
 
 /**
- * Enforcer
+ * Enforcer.
  * @method static bool enforce(...$rvals)
  * @method static array getRolesForUser(string $name, string ...$domain)
  * @method static array getUsersForRole(string $name, string ...$domain)
@@ -36,16 +41,11 @@ use Hyperf\Utils\ApplicationContext;
  */
 class Enforcer
 {
-
     /**
      * @var ContainerInterface
      */
     protected $container;
 
-    /**
-     *
-     * @param \Psr\Container\ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
@@ -57,15 +57,13 @@ class Enforcer
     }
 
     /**
-     *
      * @param string $method
-     * @param array  $parameters
+     * @param array $parameters
      *
      * @return mixed
      */
     public static function __callStatic($method, $parameters)
     {
-        return ApplicationContext::getContainer()->get(BaseEnforcer::class)->{$method}(...$parameters);
+        return \Hyperf\Context\ApplicationContext::getContainer()->get(BaseEnforcer::class)->{$method}(...$parameters);
     }
-
 }

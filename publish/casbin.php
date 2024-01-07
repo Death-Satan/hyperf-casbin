@@ -1,4 +1,12 @@
 <?php
+/**
+ * This file is part of hyperf components.
+ *
+ * @link     https://github.com/hyperf/hyperf
+ * @contact  2771717608@qq.com
+ */
+use Donjan\Casbin\Adapters\Mysql\DatabaseAdapter;
+use Donjan\Casbin\Watchers\RedisWatcher;
 
 declare(strict_types=1);
 
@@ -16,9 +24,9 @@ return [
      * Casbin adapter .
      */
     'adapter' => [
-        'class' => \Donjan\Casbin\Adapters\Mysql\DatabaseAdapter::class,
+        'class' => DatabaseAdapter::class,
         'constructor' => [
-            'tableName' => 'casbin_rule'
+            'tableName' => 'casbin_rule',
         ],
     ],
     /*
@@ -26,12 +34,12 @@ return [
      */
     'watcher' => [
         'enabled' => false,
-        'class' => \Donjan\Casbin\Watchers\RedisWatcher::class,
+        'class' => RedisWatcher::class,
         'constructor' => [
-            'channel' => 'casbin'
+            'channel' => 'casbin',
         ],
     ],
     'log' => [
         'enabled' => false,
-    ]
+    ],
 ];

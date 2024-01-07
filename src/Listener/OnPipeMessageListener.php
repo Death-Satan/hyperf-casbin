@@ -1,19 +1,24 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * This file is part of hyperf components.
+ *
+ * @link     https://github.com/hyperf/hyperf
+ * @contact  2771717608@qq.com
+ */
 
 namespace Donjan\Casbin\Listener;
 
-use Psr\Container\ContainerInterface;
+use Casbin\Enforcer;
+use Donjan\Casbin\Event\PipeMessage;
 use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\Framework\Event\OnPipeMessage;
 use Hyperf\Process\Event\PipeMessage as UserProcessPipeMessage;
-use Donjan\Casbin\Event\PipeMessage;
-use Casbin\Enforcer;
+use Psr\Container\ContainerInterface;
 
 class OnPipeMessageListener implements ListenerInterface
 {
-
     /**
      * @var ContainerInterface
      */
@@ -50,5 +55,4 @@ class OnPipeMessageListener implements ListenerInterface
             }
         }
     }
-
 }

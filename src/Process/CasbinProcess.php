@@ -1,18 +1,23 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * This file is part of hyperf components.
+ *
+ * @link     https://github.com/hyperf/hyperf
+ * @contact  2771717608@qq.com
+ */
 
 namespace Donjan\Casbin\Process;
 
-use Hyperf\Process\AbstractProcess;
-use Psr\Container\ContainerInterface;
-use Hyperf\Redis\Redis;
 use Donjan\Casbin\Event\PipeMessage;
+use Hyperf\Process\AbstractProcess;
+use Hyperf\Redis\Redis;
+use Psr\Container\ContainerInterface;
 use Swoole\Server;
 
 class CasbinProcess extends AbstractProcess
 {
-
     /**
      * @var Server
      */
@@ -28,7 +33,7 @@ class CasbinProcess extends AbstractProcess
     {
         $redis = $this->container->get(Redis::class);
         $redis->setOption(\Redis::OPT_READ_TIMEOUT, -1);
-        $channel = config('casbin.watcher.constructor.channel') ?? 'casbin';
+        $channel = \Hyperf\Config\config('casbin.watcher.constructor.channel') ?? 'casbin';
         $redis->subscribe([$channel], function ($instance, $channel, $message) {
             $server = $this->server;
             $workerCount = $server->setting['worker_num'] + ($server->setting['task_worker_num'] ?? 0) - 1;
@@ -46,7 +51,6 @@ class CasbinProcess extends AbstractProcess
 
     public function isEnable($server): bool
     {
-        return config('casbin.watcher.enabled') == true;
+        return \Hyperf\Config\config('casbin.watcher.enabled') == true;
     }
-
 }

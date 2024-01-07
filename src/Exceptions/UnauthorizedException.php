@@ -1,20 +1,22 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * This file is part of hyperf components.
+ *
+ * @link     https://github.com/hyperf/hyperf
+ * @contact  2771717608@qq.com
+ */
 
 namespace Donjan\Casbin\Exceptions;
 
-use Symfony\Component\HttpKernel\Exception\HttpException;
-
-class UnauthorizedException extends HttpException
+class UnauthorizedException extends \Exception
 {
     /**
      * Create a new exception instance.
-     *
-     * @return void
      */
     public function __construct()
     {
-        parent::__construct(403, 'This action is unauthorized.');
+        parent::__construct('This action is unauthorized.', 403);
     }
 }

@@ -1,14 +1,25 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of hyperf components.
+ *
+ * @link     https://github.com/hyperf/hyperf
+ * @contact  2771717608@qq.com
+ */
+
 namespace Donjan\Casbin\Tests;
 
-use Donjan\Casbin\Enforcer;
-use Casbin\Persist\Adapters\Filter;
 use Casbin\Exceptions\InvalidFilterTypeException;
+use Casbin\Persist\Adapters\Filter;
+use Donjan\Casbin\Enforcer;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class DatabaseAdapterTest extends TestCase
 {
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -43,7 +54,7 @@ class DatabaseAdapterTest extends TestCase
         $this->assertFalse(Enforcer::enforce('user1', 'add-policies-2', 'read'));
         Enforcer::AddPolicies([
             ['user1', 'add-policies-1', 'read'],
-            ['user1', 'add-policies-2', 'read']
+            ['user1', 'add-policies-2', 'read'],
         ]);
         $this->assertTrue(Enforcer::enforce('user1', 'add-policies-1', 'read'));
         $this->assertTrue(Enforcer::enforce('user1', 'add-policies-2', 'read'));
@@ -60,13 +71,13 @@ class DatabaseAdapterTest extends TestCase
     {
         Enforcer::AddPolicies([
             ['user1', 'add-policies-1', 'read'],
-            ['user1', 'add-policies-2', 'read']
+            ['user1', 'add-policies-2', 'read'],
         ]);
         $this->assertTrue(Enforcer::enforce('user1', 'add-policies-1', 'read'));
         $this->assertTrue(Enforcer::enforce('user1', 'add-policies-2', 'read'));
         Enforcer::RemovePolicies([
             ['user1', 'add-policies-1', 'read'],
-            ['user1', 'add-policies-2', 'read']
+            ['user1', 'add-policies-2', 'read'],
         ]);
         $this->assertFalse(Enforcer::enforce('user1', 'add-policies-1', 'read'));
         $this->assertFalse(Enforcer::enforce('user1', 'add-policies-2', 'read'));
@@ -96,16 +107,16 @@ class DatabaseAdapterTest extends TestCase
             ['user2', 'data2', 'write'],
             ['role1', 'data2', 'read'],
             ['role1', 'data2', 'write'],
-                ], Enforcer::getPolicy());
+        ], Enforcer::getPolicy());
 
         Enforcer::updatePolicy(
-                ['user1', 'data1', 'read'],
-                ['user1', 'data1', 'write']
+            ['user1', 'data1', 'read'],
+            ['user1', 'data1', 'write']
         );
 
         Enforcer::updatePolicy(
-                ['user2', 'data2', 'write'],
-                ['user2', 'data2', 'read']
+            ['user2', 'data2', 'write'],
+            ['user2', 'data2', 'read']
         );
 
         $this->assertEquals([
@@ -113,18 +124,17 @@ class DatabaseAdapterTest extends TestCase
             ['user2', 'data2', 'read'],
             ['role1', 'data2', 'read'],
             ['role1', 'data2', 'write'],
-                ], Enforcer::getPolicy());
+        ], Enforcer::getPolicy());
     }
 
     public function testUpdatePolicies()
     {
-
         $this->assertEquals([
             ['user1', 'data1', 'read'],
             ['user2', 'data2', 'write'],
             ['role1', 'data2', 'read'],
             ['role1', 'data2', 'write'],
-                ], Enforcer::getPolicy());
+        ], Enforcer::getPolicy());
 
         $oldPolicies = [
             ['user1', 'data1', 'read'],
@@ -142,7 +152,7 @@ class DatabaseAdapterTest extends TestCase
             ['user2', 'data2', 'read'],
             ['role1', 'data2', 'read'],
             ['role1', 'data2', 'write'],
-                ], Enforcer::getPolicy());
+        ], Enforcer::getPolicy());
     }
 
     public function testUpdateFilteredPolicies()
@@ -166,7 +176,7 @@ class DatabaseAdapterTest extends TestCase
             $filter = ['user1', 'data1', 'read'];
             Enforcer::loadFilteredPolicy($filter);
             $e = InvalidFilterTypeException::class;
-            $this->fail("Expected exception $e not thrown");
+            $this->fail("Expected exception {$e} not thrown");
         } catch (InvalidFilterTypeException $e) {
             $this->expectExceptionMessage($e->getMessage());
         }
@@ -175,15 +185,15 @@ class DatabaseAdapterTest extends TestCase
         $filter = "v0 = 'user2'";
         Enforcer::loadFilteredPolicy($filter);
         $this->assertEquals([
-            ['user2', 'data2', 'write']
-                ], Enforcer::getPolicy());
+            ['user2', 'data2', 'write'],
+        ], Enforcer::getPolicy());
         // Filter
         $filter = new Filter(['v2'], ['read']);
         Enforcer::loadFilteredPolicy($filter);
         $this->assertEquals([
             ['user1', 'data1', 'read'],
             ['role1', 'data2', 'read'],
-                ], Enforcer::getPolicy());
+        ], Enforcer::getPolicy());
         // Closure
         Enforcer::loadFilteredPolicy(function ($query) {
             $query->where('v1', 'data1');
@@ -191,7 +201,6 @@ class DatabaseAdapterTest extends TestCase
 
         $this->assertEquals([
             ['user1', 'data1', 'read'],
-                ], Enforcer::getPolicy());
+        ], Enforcer::getPolicy());
     }
-
 }

@@ -1,20 +1,25 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * This file is part of hyperf components.
+ *
+ * @link     https://github.com/hyperf/hyperf
+ * @contact  2771717608@qq.com
+ */
 
 namespace Donjan\Casbin\Listener;
 
-use Psr\Container\ContainerInterface;
-use Hyperf\Event\Contract\ListenerInterface;
-use Donjan\Casbin\Event\PolicyChanged;
 use Donjan\Casbin\Event\PipeMessage;
-use Swoole\Server;
+use Donjan\Casbin\Event\PolicyChanged;
+use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\Process\ProcessCollector;
 use Hyperf\Server\ServerManager;
+use Psr\Container\ContainerInterface;
+use Swoole\Server;
 
 class OnPolicyChangedListener implements ListenerInterface
 {
-
     /**
      * @var ContainerInterface
      */
@@ -34,7 +39,7 @@ class OnPolicyChangedListener implements ListenerInterface
 
     public function process(object $event): void
     {
-        if (config('casbin.watcher.enabled')) { //启用watcher，不响应此事件
+        if (\Hyperf\Config\config('casbin.watcher.enabled')) { // 启用watcher，不响应此事件
             return;
         }
         $serverManager = $this->container->get(ServerManager::class);
@@ -48,7 +53,7 @@ class OnPolicyChangedListener implements ListenerInterface
                     }
                 }
             }
-            if (class_exists(ProcessCollector::class) && !ProcessCollector::isEmpty()) {
+            if (class_exists(ProcessCollector::class) && ! ProcessCollector::isEmpty()) {
                 $processes = ProcessCollector::all();
                 if ($processes) {
                     $string = serialize(new PipeMessage(PipeMessage::LOAD_POLICY));
@@ -59,5 +64,4 @@ class OnPolicyChangedListener implements ListenerInterface
             }
         }
     }
-
 }

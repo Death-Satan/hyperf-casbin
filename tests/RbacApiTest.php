@@ -1,12 +1,23 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of hyperf components.
+ *
+ * @link     https://github.com/hyperf/hyperf
+ * @contact  2771717608@qq.com
+ */
+
 namespace Donjan\Casbin\Tests;
 
 use Donjan\Casbin\Enforcer;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class RbacApiTest extends TestCase
 {
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -98,7 +109,7 @@ class RbacApiTest extends TestCase
         Enforcer::addPermissionForUser('user1', 'data1', 'read');
         Enforcer::addPermissionForUser('user1', 'data2', 'read');
         Enforcer::deletePermissionForUser('user1', 'data2');
-        Enforcer::loadPolicy(); //php-casbin 未能删除model的数据 Model\Policy.php removePolicy, deletePermissionForUser('user1', 'data2','read') 完全匹配才能删除
+        Enforcer::loadPolicy(); // php-casbin 未能删除model的数据 Model\Policy.php removePolicy, deletePermissionForUser('user1', 'data2','read') 完全匹配才能删除
         $this->assertTrue(Enforcer::enforce('user1', 'data1', 'read'));
         $this->assertFalse(Enforcer::enforce('user1', 'data2', 'read'));
     }
@@ -140,8 +151,7 @@ class RbacApiTest extends TestCase
         Enforcer::addRoleForUser('user1', 'admin1');
         $this->assertEquals(Enforcer::getImplicitPermissionsForUser('user1'), [
             ['user1', 'data1', 'read'],
-            ['admin1', 'data2', 'read']
+            ['admin1', 'data2', 'read'],
         ]);
     }
-
 }

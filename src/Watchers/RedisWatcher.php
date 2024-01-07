@@ -1,20 +1,24 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * This file is part of hyperf components.
+ *
+ * @link     https://github.com/hyperf/hyperf
+ * @contact  2771717608@qq.com
+ */
 
 namespace Donjan\Casbin\Watchers;
 
 use Casbin\Persist\Watcher;
 use Hyperf\Redis\Redis;
-use Closure;
 use Psr\Container\ContainerInterface;
 
 /**
- * RedisWatcher
+ * RedisWatcher.
  */
 class RedisWatcher implements Watcher
 {
-
     /**
      * @var ContainerInterface
      */
@@ -26,7 +30,7 @@ class RedisWatcher implements Watcher
     private $pubRedis;
 
     /**
-     * channel
+     * channel.
      */
     private $channel;
 
@@ -45,13 +49,8 @@ class RedisWatcher implements Watcher
     /**
      * Sets the callback function that the watcher will call when the policy in DB has been changed by other instances.
      * A classic callback is loadPolicy() method of Enforcer class.
-     *
-     * @param Closure $func
      */
-    public function setUpdateCallback(Closure $func): void
-    {
-        
-    }
+    public function setUpdateCallback(\Closure $func): void {}
 
     /**
      * Update calls the update callback of other instances to synchronize their policy.
@@ -70,5 +69,4 @@ class RedisWatcher implements Watcher
     {
         $this->pubRedis->close();
     }
-
 }
